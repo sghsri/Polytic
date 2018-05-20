@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -142,6 +144,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                         ListView lv = findViewById(R.id.representativelist);
                         lv.setAdapter(new RepAdapter(getApplicationContext(),reps));
+                        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Intent intent = new Intent(getApplicationContext(),RepresentativeInfo.class);
+                                intent.putExtra("repinfo",reps.get(i));
+                                startActivity(intent);
+                            }
+                        });
                         break;
                     } catch (JSONException e) {
                         e.printStackTrace();

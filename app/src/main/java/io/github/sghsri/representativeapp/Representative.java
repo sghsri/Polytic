@@ -1,16 +1,10 @@
 package io.github.sghsri.representativeapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Representative {
-    /*
-                            String name = jsonobject.getString("name");
-                            String office = (String)civildata.getJSONArray("offices").get(i);
-                            String party = jsonobject.getString("party");
-                            String phone = (String)jsonobject.getJSONArray("phones").get(0);
-                            String url = (String)jsonobject.getJSONArray("urls").get(0);
-                            String photoUrl = jsonobject.getString("photoUrl");
-     */
+public class Representative implements Serializable {
+
     private String name;
     private String office;
     private String party;
@@ -20,7 +14,7 @@ public class Representative {
     private String address;
     private ArrayList<SocialMedia> socialMedia;
 
-    //committee membership
+    //committee membership,, enacted legislation, bills sponsored
     public Representative(String n, String o, String p, String ph, String u, String pu, String ad, ArrayList<SocialMedia> sm){
         name = n;
         office = o;
