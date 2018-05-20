@@ -90,7 +90,7 @@ public class Representative implements Serializable {
         this.url = url;
     }
 
-    public static class SocialMedia{
+    public static class SocialMedia implements Serializable{
         String type;
         String id;
         public SocialMedia(String t, String i){
