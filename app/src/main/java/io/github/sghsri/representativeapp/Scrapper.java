@@ -30,7 +30,7 @@ public class Scrapper {
                 scrapeSpecific(pageUrl, c);
             }
         }
-        return null;
+        return c;
     }
 
     private static void scrapeSpecific(String extra, CandidateInfo c) {
