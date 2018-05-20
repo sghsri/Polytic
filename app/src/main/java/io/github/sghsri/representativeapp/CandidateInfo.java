@@ -1,8 +1,9 @@
 package io.github.sghsri.representativeapp;
+
 import java.io.Serializable;
 import java.util.*;
 
-public class CandidateInfo implements Serializable{
+public class CandidateInfo implements Serializable {
     private String mName;
     private Set<Committee> mCommittees = new HashSet<>();
     private List<String> mEnactedLegislation = new ArrayList<>();
@@ -48,7 +49,7 @@ public class CandidateInfo implements Serializable{
     }
 }
 
-class Committee {
+class Committee implements Serializable {
     private String mName;
     private Map<String, String> mSubcommittees = new HashMap<>();
 
