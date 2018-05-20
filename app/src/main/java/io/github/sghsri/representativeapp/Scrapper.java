@@ -5,18 +5,20 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Scrapper {
 
     public static void main(String[] args) {
-        getCandidateInfo("TX", 2, -95.56698879999999, 29.7934907);
+        getCandidateInfo();
     }
 
-    public static CandidateInfo getCandidateInfo(String stateAbbrev, int congDistr, double lat, double lon) {
-        CandidateInfo c = null;
+    public static List<CandidateInfo> getCandidateInfo() {
+        List<CandidateInfo> c = new ArrayList<>();
 
-        String url = "https://www.govtrack.us/congress/members/TX/7#q=&marker_lng=-95.64837279999999&marker_lat=29.908547300000002";
+        String url = "https://www.govtrack.us/congress/members/TX/2#q=&marker_lng=-95.56698879999999&marker_lat=29.7934907";
         Scanner s = new Scanner(getWebPage(url));
         while (s.hasNext()) {
             if (s.nextLine().contains("<div class=\"col-sm-3\" style=\"padding-right: 0; padding-bottom: 1em;\">")) {
@@ -26,8 +28,8 @@ public class Scrapper {
                 pageUrl = pageUrl.substring(0, pageUrl.indexOf('\"'));
 
                 String name = s.nextLine().replaceAll("\\s\\s+", "");
-                c = new CandidateInfo(name);
-                scrapeSpecific(pageUrl, c);
+                c.add(new CandidateInfo(name));
+                scrapeSpecific(pageUrl, c.get(c.size() - 1));
             }
         }
         return c;

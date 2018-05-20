@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigation;
     private Toolbar myToolbar;
     ArrayList<Representative> reps;
+    List<CandidateInfo> mCandidateInfos = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
                 URL currentlink = new URL("https://www.googleapis.com/civicinfo/v2/representatives?address=17531 Bending%20Post%20Drive%2077095&levels=country&key="+getResources().getString(R.string.api_key));
                 HttpsURLConnection civilinfo = (HttpsURLConnection) currentlink.openConnection();
                 civilinfo.connect();
-
                 if (civilinfo.getResponseCode() == 200) {
                     //if connection had no problem
                     Log.i("CIVIL_TASK", "Success");
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
                     civilinfo.disconnect();
                     currentcivil = buffer.toString();
                     Log.d("CIVIL_OUTPUT", currentcivil);
+
+                    mCandidateInfos = Scrapper.getCandidateInfo();
                     return "Success";
                 } else {
                     return "Fail";
