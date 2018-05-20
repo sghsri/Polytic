@@ -146,13 +146,21 @@ public class MainActivity extends AppCompatActivity {
                             Representative rep = new Representative(name,office,party,phone,url,photoUrl,address,getSocMedia(jsonobject.getJSONArray("channels")));
                             reps.add(rep);
                         }
+
+
                         ListView lv = findViewById(R.id.representativelist);
                         lv.setAdapter(new RepAdapter(getApplicationContext(),reps));
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                CandidateInfo c = null;
+                                for (CandidateInfo ci : mCandidateInfos) {
+                                    if (ci.getName().equals(reps.get(i).getName())) c = ci;
+                                }
+
                                 Intent intent = new Intent(getApplicationContext(),RepresentativeInfo.class);
                                 intent.putExtra("repinfo",reps.get(i));
+                                intent.putExtra("repactivities", c);
                                 startActivity(intent);
                             }
                         });
