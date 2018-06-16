@@ -3,11 +3,12 @@ package io.github.sghsri.representativeapp;
 import java.io.Serializable;
 import java.util.*;
 
-public class CandidateInfo implements Serializable {
+public class CandidateInfo implements Serializable{
     private String mName;
     private Set<Committee> mCommittees = new HashSet<>();
     private List<String> mEnactedLegislation = new ArrayList<>();
     private Map<String, Double> mIssues = new HashMap<>();
+    private Map<String, String> mAdvRating = new HashMap<>();
 
     public CandidateInfo(String name) {
         mName = name;
@@ -47,9 +48,12 @@ public class CandidateInfo implements Serializable {
     public void addIssue(String s, double d) {
         mIssues.put(s, d);
     }
+    public Map<String, String> getAdvRating() {
+        return mAdvRating;
+    }
 }
 
-class Committee implements Serializable {
+class Committee implements Serializable{
     private String mName;
     private Map<String, String> mSubcommittees = new HashMap<>();
 

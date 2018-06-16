@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 URL currentlink = new URL("https://www.googleapis.com/civicinfo/v2/representatives?address=17531 Bending%20Post%20Drive%2077095&levels=country&key="+getResources().getString(R.string.api_key));
                 HttpsURLConnection civilinfo = (HttpsURLConnection) currentlink.openConnection();
                 civilinfo.connect();
+                out.println(civilinfo.getResponseCode());
                 if (civilinfo.getResponseCode() == 200) {
                     //if connection had no problem
                     Log.i("CIVIL_TASK", "Success");
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     currentcivil = buffer.toString();
                     Log.d("CIVIL_OUTPUT", currentcivil);
 
-                    mCandidateInfos = Scrapper.getCandidateInfo();
+                    mCandidateInfos = WebScraper.getCandidateInfo();
                     return "Success";
                 } else {
                     return "Fail";
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            out.println(s);
             switch (s) {
                 case "Success":
                     intent.putExtra("connection", "Success");

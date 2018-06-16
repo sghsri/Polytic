@@ -1,31 +1,23 @@
 package io.github.sghsri.representativeapp;
 
+import android.app.ActionBar;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SeekBar;
-import android.widget.TextView;
-
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
@@ -44,6 +36,7 @@ public class RepresentativeInfo extends AppCompatActivity {
 
     private ListView mEnactedBills;
     private ListView mCommitteesList;
+    private ListView mAdvocacyList;
     private ImageView mPortrait;
 
     protected PieChart mChart;
@@ -52,13 +45,27 @@ public class RepresentativeInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_representative_info);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mRep = (Representative)getIntent().getSerializableExtra("repinfo");
         mCandInfo = (CandidateInfo)getIntent().getSerializableExtra("repactivities");
         mPortrait = findViewById(R.id.rep_image);
-        Picasso.with(this).load("https://www.govtrack.us/data/photos/412573-200px.jpeg").into(mPortrait);
+        Picasso.with(this).load(mRep.getPhotoUrl()).into(mPortrait);
+        RecyclerView RV = findViewById(R.id.socialrecyclerview);
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        RV.setLayoutManager(horizontalLayoutManagaer);
+        RV.setAdapter(new SocialRecyclerAdapter(mRep.getSocialMedia(),getApplicationContext()));
+
+        if(mRep.getName().equals("Ted Cruz")){
+            mPortrait.setBackgroundResource(R.drawable.tedcruz);
+        }
 
         mEnactedBills = findViewById(R.id.enacted_bills_list);
         mCommitteesList = findViewById(R.id.committees_list);
+        mAdvocacyList = findViewById(R.id.advlist);
+        mAdvocacyList.setAdapter(new AdvocacyAdapter(getApplicationContext(),mCandInfo.getAdvRating()));
+        System.out.println(mCandInfo.getAdvRating());
         if (mCandInfo != null) {
             List<Committee> committees = new ArrayList<>();
             for (Committee c : mCandInfo.getCommittees()) committees.add(c);
@@ -89,13 +96,12 @@ public class RepresentativeInfo extends AppCompatActivity {
         mChart.setTransparentCircleRadius(61f);
 
         mChart.setDrawCenterText(true);
-
         mChart.setRotationAngle(0);
-        // enable rotation of the chart by touch
         mChart.setRotationEnabled(true);
         mChart.setDrawEntryLabels(false);
         mChart.setHighlightPerTapEnabled(true);
-
+        mChart.setExtraLeftOffset(-50f);
+        mChart.setExtraRightOffset(10f);
         // mChart.setUnit(" €");
         // mChart.setDrawUnitsInChart(true);
 
@@ -107,12 +113,15 @@ public class RepresentativeInfo extends AppCompatActivity {
 
         Legend l = mChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setWordWrapEnabled(true);
         l.setDrawInside(false);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
+        l.setXOffset(65f);
+        l.setTextSize(12f);
 
         // entry label styling
         mChart.setEntryLabelColor(Color.WHITE);
@@ -193,6 +202,18 @@ public class RepresentativeInfo extends AppCompatActivity {
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

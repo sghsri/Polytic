@@ -23,7 +23,6 @@ public class CommitteeAdapter extends ArrayAdapter<Committee> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View v = convertView;
-
         if (v == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(getContext());
@@ -31,7 +30,6 @@ public class CommitteeAdapter extends ArrayAdapter<Committee> {
         }
 
         Committee p = getItem(position);
-
         if (p != null) {
             TextView tt1 = v.findViewById(R.id.committee_name);
             TextView tt2 = v.findViewById(R.id.subcommittee_text);
@@ -43,6 +41,9 @@ public class CommitteeAdapter extends ArrayAdapter<Committee> {
                 subText += p.getSubcommitees().get(s) + " of " + s + '\n';
             }
             tt2.setText(subText);
+            if(subText.equals("")){
+                tt2.setVisibility(View.INVISIBLE);
+            }
         }
 
         return v;

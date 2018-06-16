@@ -1,4 +1,5 @@
 package io.github.sghsri.representativeapp;
+
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Scrapper {
+public class WebScraper {
 
     public static void main(String[] args) {
         getCandidateInfo();
@@ -43,6 +44,17 @@ public class Scrapper {
     }
 
     private static void processWebpage(String line, Scanner s, CandidateInfo c) {
+        if (line.contains("Ratings from Advocacy Organizations")) {
+            String str;
+            while (!(str = s.nextLine()).contains("</section>")) {
+                if (str.contains("title")) {
+                    String process = s.nextLine().replaceAll("\\s\\s|\\s<b>|</b>", "");
+                    String advName = process.split(":")[0];
+                    String advRating = process.split(":")[1];
+                    c.getAdvRating().put(advName, advRating);
+                }
+            }
+        }
         if (line.contains("Committee Membership")) {
             for (int i = 0; i < 6; i++) s.nextLine();
             boolean hasMoreCommittees = true;

@@ -72,7 +72,7 @@ public class RepAdapter extends BaseAdapter {
         holder.office = convertView.findViewById(R.id.rep_row_office);
         holder.party = convertView.findViewById(R.id.rep_row_party);
         if(r.getPhotoUrl() != "default") {
-            Picasso.with(convertView.getContext()).load(r.getPhotoUrl()).into(holder.pic);
+            Picasso.with(convertView.getContext()).load(r.getPhotoUrl()).fit().centerInside().into(holder.pic);
         }
         holder.name.setText(r.getName());
         holder.office.setText(r.getOffice());
