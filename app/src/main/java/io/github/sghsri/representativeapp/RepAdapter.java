@@ -18,11 +18,6 @@ import java.util.Locale;
 
 import static java.lang.System.out;
 
-
-/**
- * Created by SriramHariharan on 3/12/18.
- */
-
 public class RepAdapter extends BaseAdapter {
 
     Context context;
@@ -63,7 +58,6 @@ public class RepAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         Representative r = reps.get(position);
         Holder holder = new Holder();
         convertView = inflater.inflate(R.layout.rep_row, null);
@@ -75,11 +69,14 @@ public class RepAdapter extends BaseAdapter {
             Picasso.with(convertView.getContext()).load(r.getPhotoUrl()).fit().centerInside().into(holder.pic);
         }
         holder.name.setText(r.getName());
-        holder.office.setText(r.getOffice());
+        holder.office.setText(r.getOffice().substring(0, r.getOffice().length() > 38 ? 38 : r.getOffice().length()));
         if(r.getParty().equals("Republican")){
             holder.party.setBackgroundColor(convertView.getResources().getColor(R.color.colorAccent));
         }else{
             holder.party.setBackgroundColor(convertView.getResources().getColor(R.color.colorPrimary));
+        }
+        if (r.getName().equals("Ted Cruz")) {
+            Picasso.with(convertView.getContext()).load("https://www.govtrack.us/data/photos/412573-200px.jpeg").into(holder.pic);
         }
         return convertView;
     }
